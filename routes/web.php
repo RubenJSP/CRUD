@@ -1,7 +1,5 @@
 <?php
-
 use Illuminate\Support\Facades\Route;
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -16,3 +14,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/suma/{n1}/{n2}',"WebController@suma")->where(array('n1' => '[0-9]+','n2' => '[0-9]+'));
+/*Route::get('/suma/{n1?}/{n2?}', function ($n1=0,$n2=0) {
+    echo 'El resultado es '.($n1+$n2);
+
+})->where(array('n1' => '[0-9]+','n1' => '[0-9]+'));*/

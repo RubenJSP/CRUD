@@ -7,6 +7,6 @@
     <title>SUMA</title>
 </head>
 <body>
-    <p>La suma es: <b> {{$num1 + $num2}}</b></p>
+    <p>La suma es: <b> {{$num1 + $num2}}</b>    </p>
 </body>
 </html>

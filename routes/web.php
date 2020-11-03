@@ -22,3 +22,6 @@ Route::get('/suma/{n1}/{n2}',"WebController@suma")->where(array('n1' => '[0-9]+'
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
+
+Route::get('/books', 'BookController@index');
+Route::get('/categories', 'CategoryController@index');

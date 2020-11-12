@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('/suma/{n1}/{n2}',"WebController@suma")->where(array('n1' => '[0-9]+','n2' => '[0-9]+'));
+/*Route::get('/suma/{n1}/{n2}',"WebController@suma")->where(array('n1' => '[0-9]+','n2' => '[0-9]+'));*/
 /*Route::get('/suma/{n1?}/{n2?}', function ($n1=0,$n2=0) {
     echo 'El resultado es '.($n1+$n2);
 
@@ -27,4 +27,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/books', 'BookController@index')->name('Books');
     Route::get('/categories', 'CategoryController@index')->name('Categories'); 
     Route::post('/categories','CategoryController@store');
+    Route::put('/categories','CategoryController@update');
+    Route::delete('/categories/{category}','CategoryController@destroy');
 });

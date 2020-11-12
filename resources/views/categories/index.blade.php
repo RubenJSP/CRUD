@@ -23,6 +23,7 @@
                         <th scope="col">#</th>
                         <th scope="col">Name</th>
                         <th scope="col">Description</th>
+                        <th scope ="col">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -37,6 +38,13 @@
                                 </td>
                                 <td>
                                     {{$category->description}}
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#editCategoryModal" 
+                                    onclick="editCategory({{$category->id}},'{{$category->name}}', '{{$category->description}}')">
+                                        Edit category
+                                    </button>
+                                    <button type="button" class="btn btn-danger" onclick="deleteCategory({{$category->id}},this)" >Delete</button>
                                 </td>
                             </tr>
                         @endforeach
@@ -77,4 +85,80 @@
           </div>
         </div>
       </div>
+      <div class="modal fade" id="editCategoryModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Edit Category</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="{{ url('categories')}}">
+                    @csrf
+                    @method('PUT')
+                    <div class="form-group">
+                      <label for="exampleInputCategoryName">Name</label>
+                      <input type="text" class="form-control" id="name" name="name" aria-describedby="caregoryName" placeholder="Enter category name" required>
+                      <small id="categoryNameEdit" class="form-text text-muted">Add a name</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputCategoryName">Description</label>
+                        <textarea class="form-control" id="description" name="description" rows="5"></textarea required>
+                        <small id="categoryDescriptionEdit" class="form-text text-muted">Add a description</small>
+                      </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                      <button type="submit" class="btn btn-primary">Save</button>
+                      <input type="hidden" id="id" name="id">
+                    </div>
+                  </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <x-slot name="scripts">
+          <script>
+                function editCategory(id,name,description){
+                    $('#id').val(id)
+                    $('#name').val(name) 
+                    $('#description').val(description) 
+                }
+                function deleteCategory(id,target){
+                    swal({
+                        title: "Are you sure?",
+                        text: "Once deleted, you will not be able to recover this category!",
+                        icon: "warning",
+                        buttons: true,
+                        dangerMode: true,
+                        })
+                        .then((willDelete) => {
+                        if (willDelete) {
+                            axios.delete('{{ url('categories')}}/'+id, {
+                                id: id,
+                                _token:'{{ csrf_token() }}'
+                            })
+                            .then(function (response) {
+                                if(response.data.code == "200"){
+                                    swal(response.data.message, {
+                                        icon: "success",
+                                    });
+                                }
+                                $(target).parent().parent().remove()
+                            })
+                            .catch(function (error) {
+                                console.log(error);
+                                swal("Error ocurred",{icon: "error"})
+                            });
+                          
+                        } else {
+                            swal("Your category file is safe!");
+                        }
+                    });
+                }
+          </script>
+      
+    </x-slot>
+
 </x-app-layout>

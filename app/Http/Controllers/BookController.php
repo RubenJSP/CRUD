@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Book;
+use App\Models\Category;
 use Illuminate\Http\Request;
 
 class BookController extends Controller
@@ -15,7 +16,8 @@ class BookController extends Controller
     public function index()
     {
         $books = Book::all();
-        return view('books.index',compact('books'));
+        $categories = Category::all();
+        return view('books.index',compact('books','categories'));
     }
 
     /**
@@ -36,7 +38,17 @@ class BookController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if($book = Book::create($request->all())){
+            if ($request->hasFile('cover')) {
+                $file = $request->file('cover');
+                $fileName = 'book_cover'.$book->id.'.'.$file->getClientOriginalExtension();
+                $path = $request->file('cover')->storeAs('img/books',$fileName);
+            }
+            $book->cover = $fileName;
+            $book->save();
+            return redirect()->back();
+        }
+        return  redirect()->back();
     }
 
     /**
@@ -45,9 +57,9 @@ class BookController extends Controller
      * @param  \App\Models\Book  $book
      * @return \Illuminate\Http\Response
      */
-    public function show(Book $book)
+    public function show(Request $request)
     {
-        //
+      
     }
 
     /**

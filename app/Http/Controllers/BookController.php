@@ -46,9 +46,10 @@ class BookController extends Controller
             }
             $book->cover = $fileName;
             $book->save();
-            return redirect()->back();
+            return  redirect()->back()->with('sucess', 'El libro se ha guardado correctamente');
+
         }
-        return  redirect()->back();
+        return  redirect()->back()->with('error', 'No se ha podido guardar el libro');
     }
 
     /**

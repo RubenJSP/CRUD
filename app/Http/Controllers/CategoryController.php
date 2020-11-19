@@ -37,9 +37,9 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         if($category = Category::create($request->all())){
-            return redirect()->back();
+            return  redirect()->back()->with('success', 'La categoría se ha creado correctamente');
         }
-        return  redirect()->back();
+        return  redirect()->back()->with('error', 'No se pudo crear la categoría');
     }
 
     /**
@@ -75,9 +75,9 @@ class CategoryController extends Controller
     {
         $category = Category::find($request['id']);
         if($category->Update($request->all())){
-            return redirect()->back();
+            return  redirect()->back()->with('success', 'La categoría se ha actualizado correctamente');
         }
-        return  redirect()->back();
+        return  redirect()->back()->with('error', 'No se pudo actualizar la categoría');
     }
 
     /**

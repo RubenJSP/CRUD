@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Auth;
 class CategoryController extends Controller
 {
     /**
@@ -14,8 +15,11 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::All();
-        return view('categories.index', compact('categories'));
+        if(Auth::user()->hasPermissionTo('crud categories')){
+            $categories = Category::All();
+            return view('categories.index', compact('categories'));
+        }
+        return redirect()->back()->with("error","You don't have permission");
     }
 
     /**
